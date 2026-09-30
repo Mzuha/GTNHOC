@@ -1,8 +1,8 @@
 local component = require("component")
+local sides = require("sides")
 local diode = component.proxy(component.list("bec_diode")())
 local io = component.proxy(component.list("bec_io_node")())
-
-local requiredCondensate = io.getRequiredCondensate()
+local redstone = component.proxy(component.list("redstone")())
 
 local function getKeys(tbl)
     local keys = {}
@@ -12,6 +12,11 @@ local function getKeys(tbl)
     return keys
 end
 
-local fluids = getKeys(requiredCondensate)
-
-diode.setCondensateFilters(fluids)
+while true do
+    if(redstone.getInput(sides.front) > 0) then
+        local req = io.getRequiredCondensate()
+        local fluids = getKeys(req)
+        diode.setCondensateFilters(fluids)
+        print("Condensate filters set to: " .. table.concat(fluids, ", "))
+    os.sleep(0.5)
+end
