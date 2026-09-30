@@ -18,5 +18,6 @@ while true do
         local fluids = getKeys(req)
         diode.setCondensateFilters(fluids)
         print("Condensate filters set to: " .. table.concat(fluids, ", "))
+    end
     os.sleep(0.5)
 end
