@@ -13,11 +13,18 @@ local function getKeys(tbl)
 end
 
 while true do
-    if(redstone.getInput(sides.front) > 0) then
+    local signal = redstone.getInput(sides.front) > 0
+    if(signal) then
         local req = io.getRequiredCondensate()
         local fluids = getKeys(req)
         diode.setCondensateFilters(fluids)
         print("Condensate filters set to: " .. table.concat(fluids, ", "))
+        diode.setActive(true)
+        os.sleep(2)
+    else
+        diode.setActive(false)
+        diode.setCondensateFilters({})
+        print("Diode deactivated.")
     end
     os.sleep(0.5)
 end
