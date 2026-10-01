@@ -16,15 +16,22 @@ while true do
     local signal = redstone.getInput(sides.front) > 0
     if(signal) then
         local req = io.getRequiredCondensate()
+        if(req == nil) then
+            diode.setWorkAllowed(false)
+            diode.setCondensateFilters({})
+            os.sleep(0.5)
+            goto continue
+        end
         local fluids = getKeys(req)
         diode.setCondensateFilters(fluids)
         print("Condensate filters set to: " .. table.concat(fluids, ", "))
-        diode.setActive(true)
-        os.sleep(2)
+        diode.setWorkAllowed(true)
+        os.sleep(1)
     else
-        diode.setActive(false)
+        diode.setWorkAllowed(false)
         diode.setCondensateFilters({})
         print("Diode deactivated.")
     end
-    os.sleep(0.5)
+    ::continue::
+    os.sleep(1)
 end
