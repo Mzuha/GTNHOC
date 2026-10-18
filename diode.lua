@@ -26,6 +26,7 @@ while true do
     if(signal) then
 
         local reqCondensate = bec_io_node.getRequiredCondensate()
+        local consumedCondensate = bec_io_node.getConsumedCondensate()
 
         if(reqCondensate == nil) then
             bec_diode.setWorkAllowed(false)
@@ -36,7 +37,7 @@ while true do
         local availableCondensate = bec_storage.getStoredCondensate()
 
         for rFluid, rAmount in pairs(reqCondensate) do
-            local aAmount = availableCondensate[rFluid] or 0
+            local aAmount = availableCondensate[rFluid] + (consumedCondensate[rFluid] or 0)
             if(aAmount < rAmount) then
                 print("Not enough " .. rFluid .. ". Required: " .. rAmount .. ", Available: " .. aAmount)
                 bec_diode.setWorkAllowed(false)
